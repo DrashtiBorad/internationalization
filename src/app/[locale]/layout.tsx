@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import TranslationsProvider from "../../i18n/translationProvider";
 import "../globals.css";
 import initTranslations from "@/i18n";
-import { nameSpaces } from "@/i18n/setting";
-import LanguageSwitcher from "@/components/languageSwitcher";
+import { locales, nameSpaces } from "@/i18n/setting";
+import Header from "@/components/header";
+import { QueryClientProviders } from "@/provider/clientProvider";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -11,13 +12,14 @@ export async function generateMetadata(): Promise<Metadata> {
     description: "Internationalization in Next.js 15",
   };
 }
+export const generateStaticParams = () => locales.map((locale) => ({ locale }));
 
 export default async function RootLayout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
   try {
     const locale = (await params).locale;
@@ -25,14 +27,16 @@ export default async function RootLayout({
 
     return (
       <html lang={locale}>
-        <body>
-          <LanguageSwitcher />
-          <TranslationsProvider
-            locale={locale}
-            namespaces={nameSpaces}
-            resources={resources}>
-            {children}
-          </TranslationsProvider>
+        <body className="min-h-screen">
+          <QueryClientProviders>
+            <TranslationsProvider
+              locale={locale}
+              namespaces={nameSpaces}
+              resources={resources}>
+              <Header />
+              {children}
+            </TranslationsProvider>
+          </QueryClientProviders>
         </body>
       </html>
     );

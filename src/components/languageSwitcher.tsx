@@ -1,31 +1,30 @@
 "use client";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import { locales } from "@/i18n/setting";
+
+import useChangeLocale from "@/hooks/useLocal";
+import { languages } from "@/i18n/setting";
 
 const LanguageSwitcher = () => {
-  const pathname = usePathname();
-
-  const currentLocale = pathname.split("/")[1] || "en";
+  const { currentLocale, onLocaleChange } = useChangeLocale();
 
   return (
     <div className="flex gap-2 m-4 justify-end">
-      {locales.map((lang) => {
-        return (
-          <Link
-            key={lang}
-            href={`/${lang}${pathname.replace(`/${currentLocale}`, "")}`}>
-            <button
-              className={`px-4 py-2 rounded ${
-                lang === currentLocale
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200"
-              }`}>
-              {lang.toUpperCase()}
-            </button>
-          </Link>
-        );
-      })}
+      <button
+        className={`p-[8px] rounded ${
+          currentLocale === languages.EN ? "bg-blue-500" : "text-gray"
+        }`}
+        onClick={() => onLocaleChange(languages.EN)}>
+        English
+      </button>
+
+      <div className="h-auto w-[1px] border-[#70767666] border-l" />
+
+      <button
+        className={`p-[8px] rounded ${
+          currentLocale === languages.FR ? "bg-blue-500" : "text-gray"
+        }`}
+        onClick={() => onLocaleChange(languages.FR)}>
+        FR
+      </button>
     </div>
   );
 };

@@ -1,7 +1,13 @@
 import { createInstance, i18n, Resource } from "i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next/initReactI18next";
-import { ALLNameSpaces, AllTranslation, defaultNS, locales } from "./setting";
+import {
+  ALLNameSpaces,
+  AllTranslation,
+  defaultLNG,
+  defaultNS,
+  locales,
+} from "./setting";
 
 export default async function initTranslations(
   locale: string,
@@ -28,6 +34,7 @@ export default async function initTranslations(
     supportedLngs: locales,
     ns: namespaces,
     fallbackNS: AllTranslation,
+    fallbackLng: defaultLNG,
     preload: resources ? [] : locales,
   });
 

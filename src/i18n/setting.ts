@@ -8,7 +8,8 @@ export const nameSpaces: ALLNameSpaces[] = Object.values(ALLNameSpaces);
 
 export enum languages {
   EN = "en",
-  FR = "fr",
+  FR = "fr",  
 }
 export const locales: languages[] = Object.values(languages);
 export const defaultNS = ALLNameSpaces.COMMON;
+export const defaultLNG = languages.EN;
