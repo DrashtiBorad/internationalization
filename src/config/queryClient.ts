@@ -1,5 +1,4 @@
 import { QueryClient } from "@tanstack/react-query";
-import { GraphQLClient } from "graphql-request";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -11,7 +10,3 @@ const queryClient = new QueryClient({
   },
 });
 export default queryClient;
-
-export const graphqlClient = new GraphQLClient(
-  process.env.NEXT_PUBLIC_COUNTRIES_API as string
-);

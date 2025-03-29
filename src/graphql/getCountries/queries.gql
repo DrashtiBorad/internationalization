@@ -1,6 +1,0 @@
-query Countries($filter: CountryFilterInput) {
-  countries(filter: $filter) {
-    code
-    name
-  }
-}

@@ -1,0 +1,13 @@
+query CountryListByName($countryName: ID!) {
+  country(code: $countryName) {
+    name
+    native
+    capital
+    currency
+    emoji
+    languages {
+      code
+      name
+    }
+  }
+}

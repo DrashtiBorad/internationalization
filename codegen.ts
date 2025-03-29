@@ -1,50 +1,25 @@
-import dotenv from "dotenv";
-import { IGraphQLConfig } from "graphql-config";
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
-dotenv.config({
-  debug: true,
-  path: ".env",
-});
-
-const config: IGraphQLConfig = {
-  schema: [process.env.NEXT_PUBLIC_COUNTRIES_API!],
+const config: CodegenConfig = {
+  schema: "https://countries.trevorblades.com/",
   documents: ["src/graphql/**/*.gql"],
-  extensions: {
-    codegen: {
-      debug: true,
-      verbose: true,
-      ignoreNoDocuments: true,
-      overwrite: true,
-      hooks: {
-        afterAllFileWrite: ["npx prettier --write"],
+  generates: {
+    "src/graphql/types.ts": {
+      plugins: ["typescript"], // Generates the common types in a separate file
+    },
+    "src/graphql/**/*": {
+      preset: "near-operation-file",
+      presetConfig: {
+        extension: ".ts",
+        baseTypesPath: "../../types.ts",
       },
-      generates: {
-        "src/graphql/generated.ts": {
-          plugins: [
-            "typescript",
-            "typescript-operations",
-            "typescript-react-query",
-            {
-              add: {
-                content: "/* eslint-disable */\n// @ts-nocheck\n",
-              },
-            },
-          ],
-          config: {
-            addDocBlocks: false,
-            dedupeFragments: true,
-            pureMagicComment: true,
-            disableDescriptions: true,
-            fetcher: "graphql-request",
-            legacyMode: false,
-            exposeFetcher: true,
-            exposeDocument: true,
-            exposeQueryKeys: true,
-            exposeMutationKeys: true,
-            addInfiniteQuery: true,
-            errorType: "any",
-          },
-        },
+      plugins: ["typescript-operations", "typescript-react-query"],
+      config: {
+        fetcher: "../../config/graphqlClient#customFetcher",
+        isReactHook: true,
+        reactQueryVersion: 5,
+        exposeQueryKeys: true,
+        avoidOptionals: true,
       },
     },
   },
